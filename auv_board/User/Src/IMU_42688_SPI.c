@@ -133,7 +133,7 @@ void Get_ICM42688_Data()
 			IMU.angle[i] = IMU.angle[i] + 360.0f * ceil((IMU.angle[i] - 180.0f) / 360.0f);
 		}
 		
-		IMU.angle[i] = (IMU.angle[i] / 360.0f) * 2 * PI;
+		//IMU.angle[i] = (IMU.angle[i] / 360.0f) * 2 * PI;
 	}
 }
 

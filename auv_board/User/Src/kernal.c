@@ -19,14 +19,14 @@ WF5803_t wf5803_record[record_num];
 
 void kernal()
 {
-	kernal_time.start_time = HAL_GetTick();
-	kernal_time.timer_dur = kernal_time.start_time - kernal_time.last_start_time;
+	
 	
 	
 	if(E70_433MT14S.is_init)
 		control_task();
-	if(IMU.is_init)	
-			Get_ICM42688_Data();
+//	if(IMU1.is_init)	
+//			Get_ICM42688_Data();
+	get_wit_imu_angle(&IMU2);
 	if(WF5803.is_init)	
 			wf5803_getdata();
 
@@ -72,24 +72,39 @@ void kernal()
 //		send_num_temp++;
 
 
-	auv_control();
+	//auv_control();
 	//auv_getstatus(&auv_remote,&telecontrol);
 //	auv_setspeedref(&auv_remote,&telecontrol);
-	auv_setspeedref_height(&auv_height,conv3.to_float,conv1.to_float,conv2.to_float);
+	//auv_setspeedref_height(&auv_height,conv3.to_float,conv1.to_float,conv2.to_float);
 //	auv_setangleref(&auv_remote,&telecontrol);
-	auv_setangleref_height(&auv_height,conv4.to_float);
+	//auv_setangleref_height(&auv_height,conv4.to_float);
+//	auv_setspeedref_height(&auv_height,conv1.to_float,conv3.to_float,conv4.to_float);
+//	auv_setangleref_height(&auv_height,conv2.to_float);
+//	auv_control_height();
+	
+	
+	
+	
+}
+
+void kernal_2(){
+	
+	kernal_time.start_time = HAL_GetTick();
+	kernal_time.timer_dur = kernal_time.start_time - kernal_time.last_start_time;
+	
+	
+	auv_setspeedref_height(&auv_height,conv1.to_float,conv3.to_float,conv4.to_float);
+	auv_setangleref_height(&auv_height,conv2.to_float);
+	auv_control_height();
+	
 	
 	
 	kernal_time.end_time = HAL_GetTick();
 	kernal_time.dur_time = kernal_time.end_time - kernal_time.start_time;
 	kernal_time.last_start_time = kernal_time.start_time;
-}
-
-void kernal_2(){
-	//serial_send_formatted(&serial1, "%.3f %.3f %.3f %.3f\r\n", IMU.angle[0], IMU.angle[1], IMU.angle[2], WF5803.pressure);
-	serial_send_formatted(&serial1, "%.3f %.3f %.3f %.3f\r\n",  WF5803.pressure,IMU.angle[0], IMU.angle[1], IMU.angle[2]);
-		
 	
+	//serial_send_formatted(&serial1, "%.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %d\r\n",  WF5803.depth,IMU1.angle[0], IMU1.angle[1], IMU1.angle[2], auv_height.speed_ref_x, auv_height.angle_ref_x, auv_height.speed_ref_yleft, auv_height.speed_ref_yright, kernal_time.dur_time);
+	serial_send_formatted(&serial1, "%.3f %.3f %.3f %.3f\r\n",  WF5803.depth,IMU2.angle[0], IMU2.angle[1], IMU2.angle[2]);
 }
 
 uint16_t temp_get_hz;

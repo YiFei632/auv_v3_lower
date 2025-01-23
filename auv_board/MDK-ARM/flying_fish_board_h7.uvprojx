@@ -724,16 +724,6 @@
               <FilePath>..\User\Src\thrust_lib.c</FilePath>
             </File>
             <File>
-              <FileName>IMU_42688_SPI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\Src\IMU_42688_SPI.c</FilePath>
-            </File>
-            <File>
-              <FileName>sim_SPItwo.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\Src\sim_SPItwo.c</FilePath>
-            </File>
-            <File>
               <FileName>sim_I2C.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Src\sim_I2C.c</FilePath>
@@ -747,6 +737,16 @@
               <FileName>sim_serial.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Src\sim_serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>icm_42688.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Src\icm_42688.c</FilePath>
+            </File>
+            <File>
+              <FileName>wit_imu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Src\wit_imu.c</FilePath>
             </File>
           </Files>
         </Group>

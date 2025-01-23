@@ -11,7 +11,9 @@ extern "C" {
 #include <string.h>
 #include "telecontrol.h"
 #include "control.h" 
+#include "wit_imu.h"
 
+extern int received;
 
 void lora_data(uint8_t data);
 void lora_data_full(uint8_t * data);

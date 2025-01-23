@@ -55,12 +55,14 @@ typedef struct{
 extern AUV_RemoteHandleTypedef auv_remote;
 extern AUV_HeightHandleTypedef auv_height;
 
+
 void auv_getstatus(AUV_RemoteHandleTypedef* remote, telecontrol_struct_t* telecontrol);
 void auv_setspeedref(AUV_RemoteHandleTypedef* remote, telecontrol_struct_t* telecontrol);
 void auv_setangleref(AUV_RemoteHandleTypedef* remote, telecontrol_struct_t* telecontrol);
 void auv_setspeedref_height(AUV_HeightHandleTypedef* height, float speed_x, float speed_yl, float speed_yr);
 void auv_setangleref_height(AUV_HeightHandleTypedef* height,float angle_x);
 void auv_control();
+void auv_control_height();
 	
 #endif
 #ifdef __cplusplus

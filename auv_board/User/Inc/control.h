@@ -11,11 +11,11 @@ extern "C" {
 #include "telecontrol.h"
 #include "tim.h"
 #include "pid.h"
-//#include "icm_42688.h"
+#include "icm_42688.h"
 #include "cpg.h"
-#include "sim_SPItwo.h"
+//#include "sim_SPItwo.h"
 
-#define PWM_NUM 10000
+//#define PWM_NUM 10000
 #define SERVO_LOW 900
 #define SERVO_HIGH 2100
 #define SERVO_MEDIAN 1500

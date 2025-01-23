@@ -208,9 +208,9 @@ void WriteExpDataTest(file_in_flash * ff)
 	float nums[9];
 	for(int k=0; k<3; k++)
 	{
-		nums[k] = IMU.acc[k];
-		nums[k+3] = IMU.gyro[k];
-		nums[k+6] = IMU.angle[k];
+		nums[k] = IMU1.acc[k];
+		nums[k+3] = IMU1.gyro[k];
+		nums[k+6] = IMU1.angle[k];
 	}
 	for (int k = 0; k < 9; k++)
 	{

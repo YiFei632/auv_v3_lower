@@ -13,6 +13,8 @@
 AUV_RemoteHandleTypedef auv_remote;
 AUV_HeightHandleTypedef auv_height;
 
+
+
 //状态确认函数，该函数目前功能尚不完善，三个拨杆至少要有一个拨杆为0x01才能确认状态，待后续优化。
 void auv_getstatus(AUV_RemoteHandleTypedef* remote, telecontrol_struct_t* telecontrol){
 //	if(telecontrol->dial[0] == 0x01){
@@ -138,10 +140,11 @@ void auv_setspeedref_height(AUV_HeightHandleTypedef* height, float speed_x, floa
 	height->speed_ref_yleft = speed_yl;
 	height->speed_ref_yright = speed_yr;
 	
-	(&auv_propeller[0])->speed_ref = height->speed_ref_x;
-	(&auv_propeller[1])->speed_ref = -height->speed_ref_x;
-	(&auv_propeller[2])->speed_ref = height->speed_ref_yleft;
-	(&auv_propeller[3])->speed_ref = height->speed_ref_yright;
+	(&auv_propeller[2])->speed_ref = height->speed_ref_x;
+	//(&auv_propeller[3])->speed_ref = -height->speed_ref_x;
+	(&auv_propeller[3])->speed_ref = height->speed_ref_x;
+	(&auv_propeller[0])->speed_ref = height->speed_ref_yleft;
+	(&auv_propeller[1])->speed_ref = height->speed_ref_yright;
 }
 
 float angle_temp;
@@ -187,10 +190,10 @@ void auv_setangleref_height(AUV_HeightHandleTypedef* height,float angle_x){
 	height->angle_ref_x = angle_x;
 	height->angle_ref_y = SERVO_MIDDLE;
 	
-	(&auv_servo[0])->angle_ref = height->angle_ref_x;
-	(&auv_servo[1])->angle_ref = PI - height->angle_ref_x;
-	(&auv_servo[2])->angle_ref = height->angle_ref_y;
-	(&auv_servo[3])->angle_ref = height->angle_ref_y;
+	(&auv_servo[2])->angle_ref = height->angle_ref_x;
+	(&auv_servo[3])->angle_ref = height->angle_ref_x;
+	(&auv_servo[0])->angle_ref = height->angle_ref_y;
+	(&auv_servo[1])->angle_ref = height->angle_ref_y;
 }
 
 void auv_control(){
@@ -210,11 +213,19 @@ void auv_control(){
 
 void auv_control_height(){
 	for(int i = 0;i < 4;i++){
+		//if(received > 0){
 		(&auv_propeller[i])->speed_calc = (&auv_propeller[i])->speed_ref;
 		
 		(&auv_servo[i])->angle_calc = (&auv_servo[i])->angle_ref;
-		
+			
+		//}else{
+//		(&auv_propeller[i])->speed_calc = PROPELLER_MIDDLE;
+//		(&auv_servo[i])->angle_calc = SERVO_MIDDLE;
+		//}
 		propeller_calcspeed(&auv_propeller[i]);
 		servo_calcangle(&auv_servo[i]);
 	}
+	//if(received > 0){
+		//received--;
+	//}
 }

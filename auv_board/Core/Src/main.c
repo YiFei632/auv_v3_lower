@@ -28,8 +28,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "sim_SPItwo.h"
+//#include "sim_SPItwo.h"
+#include "icm_42688.h"
 #include "wf5803.h"
+#include "wit_imu.h"
 //#include "ms5837_dev.h"
 #include "pwm_util.h"
 #include "motor_dev.h"
@@ -106,7 +108,7 @@ int main(void)
   MX_TIM15_Init();
   MX_USART2_UART_Init();
   MX_TIM16_Init();
-  MX_USART1_UART_Init();
+  
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_SDMMC1_SD_Init();
@@ -116,9 +118,10 @@ int main(void)
 	icm42688_init();
 	wf5803_init();
 	//ms5837_init(&sensor,MS5837_30BA,freshwater);
-	
+	RXEN_485;
 	E70_433MT14S_init();
-	SDCardInit();
+	
+	//SDCardInit();
 	
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
@@ -133,20 +136,20 @@ int main(void)
 	/*    Initialization    */
 	//uint8_t ret = ms5837_init(&sensor,MS5837_30BA,freshwater);
 	
-	InitPWM(&propeller_pwm[0],&htim2,TIM_CHANNEL_1);
-	__HAL_TIM_SET_COMPARE(&htim2,TIM_CHANNEL_1,1500);
-	InitPWM(&propeller_pwm[1],&htim2,TIM_CHANNEL_2);
-	__HAL_TIM_SET_COMPARE(&htim2,TIM_CHANNEL_2,1500);
-	InitPWM(&propeller_pwm[2],&htim2,TIM_CHANNEL_3);
-	__HAL_TIM_SET_COMPARE(&htim2,TIM_CHANNEL_3,1500);
-	InitPWM(&propeller_pwm[3],&htim2,TIM_CHANNEL_4);
+	InitPWM(&propeller_pwm[0],&htim3,TIM_CHANNEL_1);
+	__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,1500);
+	InitPWM(&propeller_pwm[1],&htim3,TIM_CHANNEL_2);
+	__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,1500);
+	InitPWM(&propeller_pwm[2],&htim3,TIM_CHANNEL_3);
 	__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_3,1500);
+	InitPWM(&propeller_pwm[3],&htim3,TIM_CHANNEL_4);
+	__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_4,1500);
 	HAL_Delay(5000);
 	
-	InitPWM(&servo_pwm[0],&htim3,TIM_CHANNEL_1);
-	InitPWM(&servo_pwm[1],&htim3,TIM_CHANNEL_2);
-	InitPWM(&servo_pwm[2],&htim3,TIM_CHANNEL_3);
-	InitPWM(&servo_pwm[3],&htim3,TIM_CHANNEL_4);
+	InitPWM(&servo_pwm[0],&htim2,TIM_CHANNEL_1);
+	InitPWM(&servo_pwm[1],&htim2,TIM_CHANNEL_2);
+	InitPWM(&servo_pwm[2],&htim2,TIM_CHANNEL_3);
+	InitPWM(&servo_pwm[3],&htim2,TIM_CHANNEL_4);
 	//²ÎÊýÆô¶¯
 	propeller_init(&auv_propeller[0],PROPELLER_LEFT);
 	propeller_init(&auv_propeller[1],PROPELLER_RIGHT);
@@ -162,7 +165,9 @@ int main(void)
 	(&auv_remote)->status = NO_MOOD;
 	
 	HAL_Delay(100);
-	
+	MX_USART1_UART_Init();
+	wit_imu_init(&IMU2);
+	HAL_UART_Receive_IT(&huart1, &aRxBuffer_1, 1);
 	HAL_TIM_Base_Start_IT(&htim15);
 	HAL_TIM_Base_Start_IT(&htim16);
 	HAL_TIM_Base_Start_IT(&htim12);
@@ -211,16 +216,16 @@ int main(void)
 //		SDCardCmd();
 		
 		/*write for a submerge reason*/
-		if(telecontrol.dial[0] == 0 && telecontrol.dial[1] == 0){
-			(&auv_remote)->status = NO_MOOD;
-		}
-		
-		if(telecontrol.rocker[4] >= 0x00F0){
-			if(is_record_flash == 0){
-				sd_cmd = RECORD_DATA;
-			}
-			
-		}
+//		if(telecontrol.dial[0] == 0 && telecontrol.dial[1] == 0){
+//			(&auv_remote)->status = NO_MOOD;
+//		}
+//		
+//		if(telecontrol.rocker[4] >= 0x00F0){
+//			if(is_record_flash == 0){
+//				sd_cmd = RECORD_DATA;
+//			}
+//			
+//		}
 //		}else if(telecontrol.dial[3] == 1){
 //			sd_cmd = SENT_DATA;
 //		}
@@ -236,7 +241,7 @@ int main(void)
 		
 		//sd_cmd = SD_NO_COMMAND;
 		
-		HAL_Delay(2);
+//		HAL_Delay(2);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

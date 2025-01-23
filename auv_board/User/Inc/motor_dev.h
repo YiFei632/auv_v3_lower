@@ -20,19 +20,19 @@ extern "C" {
 #define PI 3.1415926f
 	
 #define PROPELLER_MIDDLE     0.0f
-#define PROPELLER_MIN        -1.74f
-#define PROPELLER_MAX        3.48f
+#define PROPELLER_MIN        -18.00f
+#define PROPELLER_MAX        18.00f
 
 #define PROPELLER_MIDDLE_PWM 0.075f
-#define PROPELLER_MIN_PWM    0.05f
-#define PROPELLER_MAX_PWM    0.1f
+#define PROPELLER_MIN_PWM    0.06f
+#define PROPELLER_MAX_PWM    0.09f
 
 #define PROPELLER_PWM_ERR    0.15f //find some errors, set this to solve.
 	
 
-#define SERVO_MIN            0.0f
-#define SERVO_MIDDLE         0.5*PI
-#define SERVO_MAX            PI
+#define SERVO_MIN            -0.75*PI
+#define SERVO_MIDDLE         0.0
+#define SERVO_MAX            0.75*PI
 	
 #define SERVO_MIN_PWM        0.025f
 #define SERVO_MIDDLE_PWM     0.075f

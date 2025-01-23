@@ -8,6 +8,8 @@ uint8_t ADD8(uint8_t* str, int k)
 	return temp;
 }
 
+int received=0;
+
 void get_telecontrol_data_short(uint8_t * buffer)//Rewrite this function to receive command data;
 {
 	if((buffer[1] >> 6) & 0x01)
@@ -182,9 +184,29 @@ void lora_data(uint8_t data)
 	}
 }
 
+uint8_t RxBuffer_485[11];
+int temp_485 = 0;
 void RS485_data(uint8_t data)
 {
-	
+	if(temp_485 == 0 && data == 0x50){
+		RxBuffer_485[temp_485] = data;
+		temp_485++;
+		return;
+	}else if(temp_485 == 0 && data != 0x50){
+		memset((void *)RxBuffer_485,0,sizeof(RxBuffer_485));
+		temp_485 = 0;
+		return;
+	}else if(temp_485 > 0 && temp_485 < 10){
+		RxBuffer_485[temp_485] = data;
+		temp_485++;
+		return;
+	}else if(temp_485 == 10){
+		RxBuffer_485[temp_485] = data;
+		temp_485=0;
+		calc_wit_angle(&IMU2,RxBuffer_485);
+		memset((void *)RxBuffer_485,0,sizeof(RxBuffer_485));
+		return;
+	}
 }
 
 uint8_t motor_ctl_data[12];
@@ -291,6 +313,8 @@ void receive_conv(uint8_t data){
 		conv4.buf[1] = rxbuff_e70[14];
 		conv4.buf[2] = rxbuff_e70[15];
 		conv4.buf[3] = rxbuff_e70[16];
+		
+		//received++;
 		return;
 	}
 }

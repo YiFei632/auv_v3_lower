@@ -39,11 +39,14 @@ void servo_init(servo_HandleTypedef* servo, servo_id_enum id){
 
 
 void propeller_calcspeed(propeller_HandleTypedef* propeller){
+	if(fabs(propeller->speed_calc) <= 18.0f){
+	
 	if((propeller->speed_calc) >= 0.0){
 		propeller->speed_calc_pwm = data_calc(propeller->speed_calc,PROPELLER_MAX,PROPELLER_MIDDLE,PROPELLER_MAX_PWM,PROPELLER_MIDDLE_PWM);
 	}else{
 		propeller->speed_calc_pwm = data_calc(propeller->speed_calc,PROPELLER_MIDDLE,PROPELLER_MIN,PROPELLER_MIDDLE_PWM,PROPELLER_MIN_PWM);
 	}
+
 	
 //	if(fabs(propeller->speed_calc_pwm - PROPELLER_MIDDLE_PWM) <= 0.01){
 //		propeller->speed_calc_pwm = PROPELLER_MIDDLE_PWM;
@@ -51,13 +54,17 @@ void propeller_calcspeed(propeller_HandleTypedef* propeller){
 	
 	(&propeller_pwm[(int)(propeller->id)])->duty_current = PROPELLER_PWM_ERR - (propeller->speed_calc_pwm);
 	PWM_SetPWMDuty(&propeller_pwm[(int)(propeller->id)]);
+}
 	//HAL_Delay(10);
 }
 
 void servo_calcangle(servo_HandleTypedef* servo){
+	
+	if(fabs(servo->angle_calc) <= 0.5*PI){
 	servo->angle_calc_pwm = data_calc(servo->angle_calc,SERVO_MAX,SERVO_MIN,SERVO_MAX_PWM,SERVO_MIN_PWM);
 	
 	(&servo_pwm[(int)(servo->id)])->duty_current = servo->angle_calc_pwm;
 	PWM_SetPWMDuty(&servo_pwm[(int)(servo->id)]);
+	}
 	//HAL_Delay(10);
 }

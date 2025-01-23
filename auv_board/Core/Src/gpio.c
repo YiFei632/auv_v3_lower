@@ -57,16 +57,19 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOB, RS485_EN_Pin|LORA_M0_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, ICM42688_SPI_CS_Pin|LED_B_Pin|LED_G_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOE, ICM42688_CS_Pin|LED_B_Pin|LED_G_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(ICM42688_SPI_MOSI_GPIO_Port, ICM42688_SPI_MOSI_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(ICM42688_SDA_GPIO_Port, ICM42688_SDA_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, WF5803_SDA_Pin|WF5803_SCL_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, ICM42688_SPI_CK_Pin|LED_R_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, ICM42688_SCL_Pin|LED_R_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(ICM42688_MISO_GPIO_Port, ICM42688_MISO_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, LORA_M1_Pin|LORA_M2_Pin, GPIO_PIN_RESET);
@@ -86,18 +89,18 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(RS485_EN_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = ICM42688_SPI_CS_Pin;
+  GPIO_InitStruct.Pin = ICM42688_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(ICM42688_SPI_CS_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(ICM42688_CS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = ICM42688_SPI_MOSI_Pin;
+  GPIO_InitStruct.Pin = ICM42688_SDA_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  HAL_GPIO_Init(ICM42688_SPI_MOSI_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(ICM42688_SDA_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PCPin PCPin */
   GPIO_InitStruct.Pin = WF5803_SDA_Pin|WF5803_SCL_Pin;
@@ -113,11 +116,11 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = ICM42688_SPI_CK_Pin;
+  GPIO_InitStruct.Pin = ICM42688_SCL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  HAL_GPIO_Init(ICM42688_SPI_CK_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(ICM42688_SCL_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PEPin PEPin */
   GPIO_InitStruct.Pin = LED_B_Pin|LED_G_Pin;
@@ -127,10 +130,11 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = ICM42688_SPI_MISO_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(ICM42688_SPI_MISO_GPIO_Port, &GPIO_InitStruct);
+  GPIO_InitStruct.Pin = ICM42688_MISO_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(ICM42688_MISO_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = LED_R_Pin;

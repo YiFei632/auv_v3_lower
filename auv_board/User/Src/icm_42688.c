@@ -35,7 +35,7 @@ sim_I2C_t i2c1 =
 };//用户层，需要修改的引脚号和间隔时间
 
 
-IMU_t IMU = {0};
+IMU_t IMU1 = {0};
 
 // 数据转换为实际物理数据的转换系数
 static float icm42688_iic_acc_inv = 1, icm42688_iic_gyro_inv = 1;
@@ -113,7 +113,7 @@ void icm42688_init()
 	HAL_GPIO_WritePin	(i2c1.CS.GPIO_PORT, i2c1.CS.GPIO_PIN, i2c1.CS.defalt_state);
 	HAL_GPIO_WritePin	(i2c1.MISO.GPIO_PORT, i2c1.MISO.GPIO_PIN, i2c1.MISO.defalt_state);
 	HAL_Delay(10);
-	IMU.whoimi = IIC_ReadOneByte(&i2c1, DeviceAddress_ICM42688, WHO_AM_I);
+	IMU1.whoimi = IIC_ReadOneByte(&i2c1, DeviceAddress_ICM42688, WHO_AM_I);
 	HAL_Delay(50);
 	IIC_WriteOneByte(&i2c1, DeviceAddress_ICM42688, PWR_MGMT0, 0x00);
 	HAL_Delay(50);
@@ -122,7 +122,7 @@ void icm42688_init()
 	HAL_Delay(50);
 	IIC_WriteOneByte(&i2c1, DeviceAddress_ICM42688, PWR_MGMT0, 0x0F);
 	HAL_Delay(50);
-	IMU.is_init = 1;
+	IMU1.is_init = 1;
 //	IIC_WriteOneByte(&i2c1, DeviceAddress_ICM42688, DEVICE_CONFIG, 0x00);//Software reset configuration and SPI mode selection
 //	HAL_Delay(50);
 //	IIC_WriteOneByte(&i2c1, DeviceAddress_ICM42688, DRIVE_CONFIG, 0x05);//Control the communication speed(I guess)
@@ -166,7 +166,7 @@ void Get_Gyro_ICM42688_IIC(void)
     uint8_t data[6];
 	IIC_ReadBytes(&i2c1, DeviceAddress_ICM42688, GYRO_DATA_X1, 6, data);
 	for(int i = 0; i < 3; i++)
-    IMU.gyro[i] = icm42688_iic_gyro_inv * (int16_t)(((int16_t)data[2*i] << 8) | data[2*i+1]);
+    IMU1.gyro[i] = icm42688_iic_gyro_inv * (int16_t)(((int16_t)data[2*i] << 8) | data[2*i+1]);
 }
 
 /**
@@ -183,7 +183,7 @@ void Get_Acc_ICM42688_IIC(void)
     uint8_t data[6];
 	IIC_ReadBytes(&i2c1, DeviceAddress_ICM42688, ACCEL_DATA_X1, 6, data);
 	for(int i = 0; i < 3; i++)
-    IMU.acc[i] = icm42688_iic_acc_inv * (int16_t)(((int16_t)data[2*i] << 8) | data[2*i+1]);
+    IMU1.acc[i] = icm42688_iic_acc_inv * (int16_t)(((int16_t)data[2*i] << 8) | data[2*i+1]);
 }
 
 void Get_ICM42688_Data()
@@ -194,4 +194,7 @@ void Get_ICM42688_Data()
 	Get_Gyro_ICM42688_IIC();
 	Get_Acc_ICM42688_IIC();
 	Angle_Calcu();
+//	for(int i=0;i<3;i++){
+//		IMU1.angle[i]=(IMU1.angle[i]/360.0f)*(2*3.1415926f);
+//	}
 }

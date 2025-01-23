@@ -11,7 +11,8 @@ extern "C" {
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "sim_SPItwo.h"
+//#include "sim_SPItwo.h"
+#include "icm_42688.h"
 #include "kernal.h"
 
 typedef struct
